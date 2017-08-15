@@ -1,14 +1,34 @@
 {
-  "name": "celebrity-name-game",
-  "version": "0.1.0",
-  "description": "Celebrity Name Game",
-  "main": "index.html",
-  "repository": "https://github.com/hguiney/celebrity-name-game.git",
-  "author": "Hugh Guiney <hugh@hughguiney.com>",
-  "license": "UNLICENSED",
+  "author": "Hugh Guiney",
+  "cordova": {
+    "platforms": [
+      "android",
+      "ios"
+    ],
+    "plugins": {
+      "cordova-plugin-console": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-whitelist": {}
+    }
+  },
   "dependencies": {
+    "cordova-android": "^6.2.3",
+    "cordova-ios": "^4.4.0",
+    "cordova-plugin-console": "^1.0.7",
+    "cordova-plugin-device": "^1.1.6",
+    "cordova-plugin-whitelist": "^1.3.2",
     "tmdb.js": "https://github.com/hguiney/tmdb.js",
     "webcomponentsjs": "^1.0.2"
   },
-  "private": true
+  "description": "Match celebrity faces with names!",
+  "displayName": "Celebrity Name Game",
+  "license": "UNLICENSED",
+  "main": "index.js",
+  "name": "com.hughguiney.celebritynamegame",
+  "private": true,
+  "repository": "https://github.com/hguiney/celebrity-name-game.git",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.1.0"
 }
