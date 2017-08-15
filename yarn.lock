@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"tmdb.js@https://github.com/hguiney/tmdb.js":
+  version "0.1.0"
+  resolved "https://github.com/hguiney/tmdb.js#a027274428efa364b81f4263449935b04c661652"
+
 webcomponentsjs@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/webcomponentsjs/-/webcomponentsjs-1.0.2.tgz#b028914c579a61d8144913c7c94c2cf73b95fc69"

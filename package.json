@@ -7,6 +7,7 @@
   "author": "Hugh Guiney <hugh@hughguiney.com>",
   "license": "UNLICENSED",
   "dependencies": {
+    "tmdb.js": "https://github.com/hguiney/tmdb.js",
     "webcomponentsjs": "^1.0.2"
   },
   "private": true
