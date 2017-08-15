@@ -4,13 +4,45 @@
   <link rel="import" href="celeb-game-actors.html" />
   <link rel="import" href="celeb-game-actors-names.html" />
 
-  <template>
-    <style></style>
-    <celeb-header></celeb-header>
+  <template id="celeb-game">
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <celeb-game-header></celeb-game-header>
     <main>
-      <celeb-movie></celeb-movie>
-      <celeb-actors></celeb-actors>
-      <celeb-actors-names></celeb-actors-names>
+      <celeb-game-movie></celeb-game-movie>
+      <celeb-game-actors></celeb-game-actors>
+      <celeb-game-actors-names></celeb-game-actors-names>
     </main>
   </template>
+
+  <script>//<![CDATA[
+  (function () {
+    "use strict";
+
+    var ownerDocument = document.currentScript.ownerDocument;
+
+    class CelebGame extends HTMLElement {
+      
+      // Remember to call the super method here
+      constructor() {
+        super();
+
+        var app = this;
+
+        const $shadowRoot = app.attachShadow({
+          "mode": "open"
+        });
+        const $CelebGame = ownerDocument.querySelector( '#celeb-game' );
+        const $shadowContent = $CelebGame.content.cloneNode( true );
+
+        $shadowRoot.appendChild( $shadowContent );
+      }
+    }
+
+    window.customElements.define( 'celeb-game', CelebGame );
+  })();
+  //]]></script>
 </html>

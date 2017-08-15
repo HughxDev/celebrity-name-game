@@ -10,9 +10,8 @@
   <body>
     <celeb-game></celeb-game>
     <script>//<![CDATA[
-    /*jshint esversion:6*/
     (function () {
-      // window.addEventListener( 'WebComponentsReady', function HughsVlogWebComponentsReady() {
+      // window.addEventListener( 'WebComponentsReady', function CelebGameWebComponentsReady() {
       window.customElements.whenDefined( 'celeb-game' ).then(function CelebGameDefined() {
         // At this point we are guaranteed that all required polyfills have loaded,
         // all HTML imports have loaded, and all defined custom elements have upgraded
@@ -21,6 +20,7 @@
 
         console.assert( element instanceof CelebGame );  // 👍
       } );
+      // } );
     })();
     //]]></script>
   </body>
