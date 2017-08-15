@@ -1,6 +1,6 @@
 # Celebrity Name Game
---
-Introduction:
+
+## Introduction:
 
 This coding challenge is designed for you to show off your skills to the 3Play Media Developer team. You 
 should have the following challenge completed by the time you come in for your in-person interview so we
@@ -8,11 +8,9 @@ can take a look at it together. While all of the basic requirements of this proj
 encouraged to make this project your own and implement any additional features that you see fit.
 
 Feel free to ask whatever questions, use whatever resources and provide whatever documentation 
-you'd like during the completion of this project. 
---
+you'd like during the completion of this project.
 
---
-The Challenge:
+## The Challenge:
 
 Welcome to the Celebrity Name Game!
 
@@ -25,10 +23,8 @@ Underneath those pictures, should be a shuffled list of names, each of which sho
 the pictures above. Next, a user should be able to match up each of the actors' names with one of the 
 pictures. After they've matched all of them, there should be some sort of scoring mechanism so they can 
 see how they did!
---
 
---
-Technical Requirements:
+## Technical Requirements:
 1. One or more API integrations should be used to complete this project, we leave which API(s) up to you!
 2. When a user submits a movie title, the actor name and picture data should be retrieved via AJAX request.
 3. The pictures of the actors and their names should be in random order, it is a game after all! 
@@ -49,10 +45,8 @@ Technical Requirements:
 
 Lastly, be prepared to discuss your design decisions, some possible error conditions you've handled and future
 features you could implement with a bit more time.
---
 
---
-Resources:
+## Resources:
 1. IMDB Gem- https://github.com/ariejan/imdb
 2. Wikipedia Gem- https://github.com/kenpratt/wikipedia-client
 3. Google Search Gem- https://github.com/tj/google-search
@@ -61,4 +55,3 @@ Resources:
  
 Feel free to use one, all or none of these resources. We've provided them so that you have a few things 
 to get started with, but they are by no means required.
---
