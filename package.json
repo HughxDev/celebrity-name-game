@@ -1,0 +1,12 @@
+{
+  "name": "celebrity-name-game",
+  "version": "0.1.0",
+  "description": "Celebrity Name Game",
+  "main": "index.html",
+  "repository": "https://github.com/hguiney/celebrity-name-game.git",
+  "author": "Hugh Guiney <hugh@hughguiney.com>",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "webcomponentsjs": "^1.0.2"
+  }
+}
