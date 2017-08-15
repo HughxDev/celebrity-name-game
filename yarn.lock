@@ -4,7 +4,7 @@
 
 "tmdb.js@https://github.com/hguiney/tmdb.js":
   version "0.1.0"
-  resolved "https://github.com/hguiney/tmdb.js#a027274428efa364b81f4263449935b04c661652"
+  resolved "https://github.com/hguiney/tmdb.js#329a05a46a26c1008d3d9bd61375d67da403a598"
 
 webcomponentsjs@^1.0.2:
   version "1.0.2"

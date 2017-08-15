@@ -10,30 +10,30 @@
     </header>
   </template>
   <script>//<![CDATA[
-  (function () {
-    "use strict";
+    (function () {
+      "use strict";
 
-    var ownerDocument = document.currentScript.ownerDocument;
+      var ownerDocument = document.currentScript.ownerDocument;
 
-    class CelebGameHeader extends HTMLElement {
-      
-      // Remember to call the super method here
-      constructor() {
-        super();
+      class CelebGameHeader extends HTMLElement {
+        
+        // Remember to call the super method here
+        constructor() {
+          super();
 
-        var app = this;
+          var header = this;
 
-        const $shadowRoot = app.attachShadow({
-          "mode": "open"
-        });
-        const $CelebGameHeader = ownerDocument.querySelector( '#celeb-game-header' );
-        const $shadowContent = $CelebGameHeader.content.cloneNode( true );
+          const $shadowRoot = header.attachShadow({
+            "mode": "open"
+          });
+          const $CelebGameHeader = ownerDocument.querySelector( '#celeb-game-header' );
+          const $shadowContent = $CelebGameHeader.content.cloneNode( true );
 
-        $shadowRoot.appendChild( $shadowContent );
+          $shadowRoot.appendChild( $shadowContent );
+        }
       }
-    }
 
-    window.customElements.define( 'celeb-game-header', CelebGameHeader );
-  })();
+      window.customElements.define( 'celeb-game-header', CelebGameHeader );
+    })();
   //]]></script>
 </html>

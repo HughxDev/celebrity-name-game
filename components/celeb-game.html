@@ -1,8 +1,6 @@
 <html>
   <link rel="import" href="celeb-game-header.html" />
   <link rel="import" href="celeb-game-movie.html" />
-  <link rel="import" href="celeb-game-actors.html" />
-  <link rel="import" href="celeb-game-actors-names.html" />
 
   <template id="celeb-game">
     <style>
@@ -13,36 +11,34 @@
     <celeb-game-header></celeb-game-header>
     <main>
       <celeb-game-movie></celeb-game-movie>
-      <celeb-game-actors></celeb-game-actors>
-      <celeb-game-actors-names></celeb-game-actors-names>
     </main>
   </template>
 
   <script>//<![CDATA[
-  (function () {
-    "use strict";
+    (function () {
+      "use strict";
 
-    var ownerDocument = document.currentScript.ownerDocument;
+      var ownerDocument = document.currentScript.ownerDocument;
 
-    class CelebGame extends HTMLElement {
-      
-      // Remember to call the super method here
-      constructor() {
-        super();
+      class CelebGame extends HTMLElement {
+        
+        // Remember to call the super method here
+        constructor() {
+          super();
 
-        var app = this;
+          var game = this;
 
-        const $shadowRoot = app.attachShadow({
-          "mode": "open"
-        });
-        const $CelebGame = ownerDocument.querySelector( '#celeb-game' );
-        const $shadowContent = $CelebGame.content.cloneNode( true );
+          const $shadowRoot = game.attachShadow({
+            "mode": "open"
+          });
+          const $CelebGame = ownerDocument.querySelector( '#celeb-game' );
+          const $shadowContent = $CelebGame.content.cloneNode( true );
 
-        $shadowRoot.appendChild( $shadowContent );
+          $shadowRoot.appendChild( $shadowContent );
+        }
       }
-    }
 
-    window.customElements.define( 'celeb-game', CelebGame );
-  })();
+      window.customElements.define( 'celeb-game', CelebGame );
+    })();
   //]]></script>
 </html>
