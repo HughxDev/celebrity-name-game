@@ -19,10 +19,13 @@
       var ownerDocument = document.currentScript.ownerDocument;
 
       class CelebGameMovieActors extends HTMLElement {
-        get actors() {}
-
         set actors( data ) {
+          this._actors = data;
           this.render();
+        }
+
+        get actors() {
+          return this._actors;
         }
         
         // Remember to call the super method here
@@ -36,6 +39,9 @@
           const $shadowContent = $CelebGameMovieActors.content.cloneNode( true );
 
           $shadowRoot.appendChild( $shadowContent );
+
+          // @todo: Implement in tmdb.js
+          this._imagesUrlPrefix = 'https://image.tmdb.org/t/p/w276_and_h350_bestv2/';
         }
 
         connectedCallback() {
@@ -44,8 +50,43 @@
           }
         }
 
-        render() {
+        renderActors() {
+          const $actors = this.shadowRoot.querySelector( '#actors' );
+
           console.log( this.actors );
+
+          this.actors.forEach( ( actor ) => {
+            var $li = ownerDocument.createElement( 'li' );
+
+            $li.textContent = actor.name;
+
+            $actors.appendChild( $li );
+          } );
+
+          // $actors.innerHTML += actorsHTML;
+        }
+
+        renderNames() {
+          const $names = this.shadowRoot.querySelector( '#names' );
+
+          this.actors.forEach( ( actor ) => {
+            var $li = ownerDocument.createElement( 'li' );
+
+            var $img = ownerDocument.createElement( 'img' );
+
+            $img.src = this._imagesUrlPrefix + actor.profile_path;
+
+            $li.appendChild( $img );
+
+            $names.appendChild( $li );
+          } );
+
+          // $actors.innerHTML += actorsHTML;
+        }
+
+        render() {
+          this.renderNames();
+          this.renderActors();
         }
       }
 

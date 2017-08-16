@@ -20,7 +20,6 @@
       var ownerDocument = document.currentScript.ownerDocument;
 
       class CelebGameMovie extends HTMLElement {
-        
         // Remember to call the super method here
         constructor() {
           super();
@@ -58,11 +57,12 @@
           const $actors = this.shadowRoot.querySelector( '#actors' );
 
           if ( !!topFive & topFive.length ) {
+            console.log( '$actors', $actors );
+            
+            // console.log( 'topFive', topFive );
+
+            // console.log( '$actors.actors', $actors.actors );
             $actors.actors = topFive;
-
-            console.log( 'topFive', topFive );
-
-            console.log( '$actors.actors', $actors.actors );
           }
         }
       }
