@@ -6,26 +6,70 @@
       :host {
         display: block;
         text-align: center;
+
+        --list-item__margin--double: calc( var( --list-item__margin ) * 2 );
+      }
+
+      * {
+        @apply --universal;
       }
 
       .form {
-        width: var( --content__width );
+        padding: 0 var( --list-item__margin--double );
         margin: 0 auto;
+      }
+
+      .title {
+        border: 0.0625rem solid #ddd;
+        font-size: 1.5rem;
+        margin: 1.5rem 0;
+        width: calc( 75% - var( --list-item__margin--double ) );
       }
 
       .button {
         @apply --button-reset;
-
-        background-color: #169CFF;
       }
 
       .button.button--load {
+        font-size: 1.1rem;
+        padding: .25rem;
+        width: 25%;
+      }
 
+      .title,
+      .button.button--load {
+        height: 3rem;
+        padding: 0 .5rem;
+        vertical-align: middle;
+      }
+
+      dl {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        position: relative;
+      }
+
+      dt {
+        position: absolute;
+        top: 0;
+      }
+
+      dd {
+        margin-left: 0;
+        padding-left: 0;
+        /*height: inherit;*/
+        width: 100%;
       }
     </style>
     <form id="form" class="form" name="form">
-      <label>Movie Title: <input type="text" id="title" name="title" value="The Matrix" /></label>
-      <button id="load" class="button button--load">Load</button>
+      <dl>
+        <dt><label for="title">Movie:</label></dt>
+        <dd>
+          <input id="title" class="title" name="title" type="text" value="The Matrix" />
+          <button id="load" class="button button--load">Load</button>
+        </dd>
+      </dl>
     </form>
     <celeb-game-movie__actors id="actors"></celeb-game-movie__actors>
   </template>
@@ -33,20 +77,29 @@
     (function () {
       "use strict";
 
-      var ownerDocument = document.currentScript.ownerDocument;
+      const ownerDocument = document.currentScript.ownerDocument;
+      const $template = ownerDocument.querySelector( '#celeb-game-movie' );
+
+      if ( $template ) {
+        if ( ShadyCSS ) {
+          ShadyCSS.prepareTemplate( $template, 'celeb-game-movie' );
+        }
+      }
 
       class CelebGameMovie extends HTMLElement {
-        // Remember to call the super method here
         constructor() {
           super();
 
-          const $shadowRoot = this.attachShadow({
-            "mode": "open"
-          });
-          const $CelebGameMovie = ownerDocument.querySelector( '#celeb-game-movie' );
-          const $shadowContent = $CelebGameMovie.content.cloneNode( true );
+          if ( ShadyCSS ) {
+            ShadyCSS.styleElement( this );
+          }
 
-          $shadowRoot.appendChild( $shadowContent );
+          if ( $template && !this.shadowRoot ) {
+            this.attachShadow({
+              "mode": "open"
+            });
+            this.shadowRoot.appendChild( ownerDocument.importNode( $template.content, true ) );
+          }
 
           this.load = this.load.bind( this );
         } // constructor
@@ -73,11 +126,6 @@
           const $actors = this.shadowRoot.querySelector( '#actors' );
 
           if ( !!topFive & topFive.length ) {
-            console.log( '$actors', $actors );
-            
-            // console.log( 'topFive', topFive );
-
-            // console.log( '$actors.actors', $actors.actors );
             $actors.actors = topFive;
           }
         }
