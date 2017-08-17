@@ -15,14 +15,14 @@
       }
 
       .form {
-        padding: 0 var( --list-item__margin--double );
+        /*padding: 0 var( --list-item__margin--double );*/
         margin: 0 auto;
+        width: var( --content__width );
       }
 
-      .title {
+      .io {
         border: 0.0625rem solid #ddd;
         font-size: 1.5rem;
-        margin: 1.5rem 0;
         width: calc( 75% - var( --list-item__margin--double ) );
       }
 
@@ -30,17 +30,18 @@
         @apply --button-reset;
       }
 
-      .button.button--load {
+      .button.button--sidekick {
         font-size: 1.1rem;
         padding: .25rem;
         width: 25%;
       }
 
-      .title,
-      .button.button--load {
+      .io,
+      .button.button--sidekick {
         height: 3rem;
         padding: 0 .5rem;
         vertical-align: middle;
+        margin: 1.5rem 0 0;
       }
 
       dl {
@@ -61,13 +62,28 @@
         /*height: inherit;*/
         width: 100%;
       }
+
+      .io.io--output {
+        appearance: textfield;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 0.6rem 0.5rem;
+      }
     </style>
     <form id="form" class="form" name="form">
       <dl>
-        <dt><label for="title">Movie:</label></dt>
+        <dt><label for="score">Score</label></dt>
         <dd>
-          <input id="title" class="title" name="title" type="text" value="The Matrix" />
-          <button id="load" class="button button--load">Load</button>
+          <output id="score" class="score io io--output">999999999999999</output>
+          <button id="reset" class="button button--sidekick" type="reset">Reset</button>
+        </dd>
+      </dl>
+      <dl>
+        <dt><label for="title">Movie</label></dt>
+        <dd>
+          <input id="title" class="title io" name="title" type="text" value="The Matrix" />
+          <button id="load" class="button button--sidekick">Load</button>
         </dd>
       </dl>
     </form>
