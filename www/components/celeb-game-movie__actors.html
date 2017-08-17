@@ -19,6 +19,12 @@
         width: var( --content__width );
       }
 
+      @media only screen and ( min-width: 50em ) {
+        .list {
+          width: calc( var( --content__width ) * 2.5 );
+        }
+      }
+
       .list.list--cards {
         width: 50%;
       }
@@ -54,8 +60,26 @@
       .button.button--actor-name {
         padding: 0.25rem;
       }
+
+      .fade {
+        transition: opacity .25s;
+      }
+
+      .fade--hidden {
+        opacity: 0;
+      }
+
+      .loading {
+        position: absolute;
+        margin-left: auto;
+        margin-right: auto;
+        left: 0;
+        right: 0;
+        z-index: 1;
+      }
     </style>
-    <ul id="cards" class="list">
+    <img id="loading" class="loading fade fade--hidden" width="200" height="200" src="images/loading.svg" alt="Loading…" />
+    <ul id="cards" class="list fade fade--hidden">
       <!--
         <li class="list__item">
           <button class="button button\-\-actor">
@@ -110,6 +134,7 @@
           this._cardNominalHeight = 350;
           this._cardDownresFactor = 2;
 
+          this.$loading = this.shadowRoot.querySelector( '#loading' );
           this.$cards = this.shadowRoot.querySelector( '#cards' );
         }
 
@@ -119,8 +144,13 @@
           }
         }
 
-        renderActors() {
-          this.actors.forEach( ( actor ) => {
+        // Chrome’s JS engine seems to do this for you
+        // sanitizeAttributeValue( value ) {
+        //   return value.replace( '"', '&quot;' ).replace( "'", "&apos;" );
+        // }
+
+        renderFaces() {
+          this.shuffle().forEach( ( actor ) => {
             var $li = ownerDocument.createElement( 'li' );
             var $button = ownerDocument.createElement( 'button' );
             var $img = ownerDocument.createElement( 'img' );
@@ -132,6 +162,8 @@
             $button.classList.add( 'button', 'button--actor' );
             $li.classList.add( 'list__item', 'list__item--card' );
 
+            $button.setAttribute( 'data-name', actor.name );
+
             $button.appendChild( $img );
             $li.appendChild( $button );
 
@@ -142,7 +174,7 @@
         }
 
         renderNames() {
-          this.actors.forEach( ( actor ) => {
+          this.shuffle().forEach( ( actor ) => {
             var $li = ownerDocument.createElement( 'li' );
             var $button = ownerDocument.createElement( 'button' );
 
@@ -159,9 +191,53 @@
           // $actors.innerHTML += actorsHTML;
         }
 
+        spin() {
+          this.$cards.classList.add( 'fade--hidden' );
+          this.$loading.classList.remove( 'fade--hidden' );
+        }
+
+        unspin() {
+          // this.$cards.classList.remove( 'fade--hidden' );
+          // this.$loading.classList.add( 'fade--hidden' );
+          
+          setTimeout( () => {
+          //   this.$cards.classList.remove( 'fade--hidden' );
+          //   // this.$loading.hidden = true;
+            this.$loading.classList.add( 'fade--hidden' );
+
+            setTimeout( () => {
+              this.$cards.classList.remove( 'fade--hidden' );
+            }, 250 );
+          }, 250 );
+        }
+
         render() {
-          this.renderActors();
+          this.renderFaces();
           this.renderNames();
+        }
+        
+        // https://stackoverflow.com/a/12646864/214325
+        shuffle( actors ) {
+          /**
+           * Randomize array element order in-place.
+           * Using Durstenfeld shuffle algorithm.
+           */
+          actors = actors || this.actors;
+
+          for ( var i = actors.length - 1; i > 0; i-- ) {
+            var j = Math.floor( Math.random() * ( i + 1 ) );
+            var temp = actors[i];
+            actors[i] = actors[j];
+            actors[j] = temp;
+          }
+
+          return actors;
+        }
+
+        clear() {
+          while ( this.$cards.firstChild ) {
+            this.$cards.removeChild( this.$cards.firstChild );
+          }
         }
       }
 

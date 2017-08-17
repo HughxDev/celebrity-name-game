@@ -126,23 +126,67 @@
           $form.addEventListener( 'submit', this.load );
         }
 
+        getCast( movieId ) {
+          return ( new TmdbCall( tmdbKey, true ).Movie( movieId ).getCast() );
+        }
+
         load( event ) {
           event.preventDefault();
 
+          const $actors = this.shadowRoot.querySelector( '#actors' );
+
+          $actors.clear();
+
+          $actors.spin();
+
           var $form = event.currentTarget;
-
           var title = $form.elements.title.value;
-
           var movieId = new TmdbCall( tmdbKey, true ).Search( 'movie', title ).getId();
 
-          var cast = new TmdbCall( tmdbKey, true ).Movie( movieId ).getCast();
+          var movies = localStorage.getItem( 'movies' );
+          var localMovieData;
+          var cast;
+          var topFive;
 
-          var topFive = cast.slice( 0, 5 );
+          // if ( movies ) {
+          if ( false ) {
+            // Have some movies stored already; see if this one is in there
+            localMovieData = JSON.parse( movies );
 
-          const $actors = this.shadowRoot.querySelector( '#actors' );
+            if ( localMovieData.hasOwnProperty( movieId ) && localMovieData[movieId].hasOwnProperty( 'cast' ) ) {
+              cast = localMovieData[movieId].cast;
+              console.log( `Loaded Movie ID ${movieId} from localStorage` );
+            } else {
+              cast = this.getCast( movieId );
+
+              movies[movieId] = {
+                "cast": cast
+              };
+
+              localStorage.setItem( 'movies', JSON.stringify( movies ) );
+
+              console.log( `Had movies in localStorage but not this one. Stored Movie ID ${movieId} to localStorage` );
+            }
+          } else {
+            // No movies stored yet
+            // movies = {};
+
+            cast = this.getCast( movieId );
+
+            // movies[movieId] = {
+            //   "cast": cast
+            // };
+
+            // localStorage.setItem( 'movies', JSON.stringify( movies ) );
+
+            // console.log( `Stored Movie ID ${movieId} to localStorage` );
+          }
+
+          topFive = cast.slice( 0, 5 );
 
           if ( !!topFive & topFive.length ) {
             $actors.actors = topFive;
+            $actors.unspin();
           }
         }
       }
