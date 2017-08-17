@@ -3,6 +3,8 @@
     <style>
       :host {
         display: block;
+
+        --message__width: calc( var( --content__width ) - ( var( --list-item__margin ) * 2 ) );
       }
 
       * {
@@ -13,7 +15,9 @@
         max-width: 100%;
       }
 
-      .list {
+      .list,
+      .message
+       {
         padding: 0;
         margin: var( --list-item__margin ) auto;
         width: var( --content__width );
@@ -77,8 +81,24 @@
         right: 0;
         z-index: 1;
       }
+
+      .message {
+        padding: 1rem;
+        width: var( --message__width );
+      }
+
+      @media only screen and ( min-width: 50em ) {
+        .message {
+          width: calc( var( --message__width ) * 2.5 );
+        }
+      }
+
+      .message.message--error {
+        background-color: #D91B05;
+      }
     </style>
     <img id="loading" class="loading fade fade--hidden" width="200" height="200" src="images/loading.svg" alt="Loading…" />
+    <div id="not-found" class="message message--error" hidden="hidden">Not Found</div>
     <ul id="cards" class="list fade fade--hidden">
       <!--
         <li class="list__item">
@@ -133,9 +153,12 @@
           this._cardNominalWidth = 276;
           this._cardNominalHeight = 350;
           this._cardDownresFactor = 2;
+          this._cardWidth = ( this._cardNominalWidth / this._cardDownresFactor );
+          this._cardHeight = ( this._cardNominalHeight / this._cardDownresFactor );
 
           this.$loading = this.shadowRoot.querySelector( '#loading' );
           this.$cards = this.shadowRoot.querySelector( '#cards' );
+          this.$notFound = this.shadowRoot.querySelector( '#not-found' );
         }
 
         connectedCallback() {
@@ -155,9 +178,9 @@
             var $button = ownerDocument.createElement( 'button' );
             var $img = ownerDocument.createElement( 'img' );
 
-            $img.src = this._imagesUrlPrefix + actor.profile_path;
-            $img.width = ( this._cardNominalWidth / this._cardDownresFactor );
-            $img.height = ( this._cardNominalHeight / this._cardDownresFactor );
+            $img.src = ( actor.profile_path ? this._imagesUrlPrefix + actor.profile_path : `https://placehold.it/${this._cardNominalWidth}x${this._cardNominalHeight}` );
+            $img.width = this._cardWidth;
+            $img.height = this._cardHeight;
 
             $button.classList.add( 'button', 'button--actor' );
             $li.classList.add( 'list__item', 'list__item--card' );
@@ -235,9 +258,15 @@
         }
 
         clear() {
+          this.$notFound.hidden = true;
+
           while ( this.$cards.firstChild ) {
             this.$cards.removeChild( this.$cards.firstChild );
           }
+        }
+
+        notFound() {
+          this.$notFound.hidden = false;
         }
       }
 

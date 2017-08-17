@@ -137,50 +137,80 @@
 
           $actors.clear();
 
-          $actors.spin();
-
           var $form = event.currentTarget;
           var title = $form.elements.title.value;
-          var movieId = new TmdbCall( tmdbKey, true ).Search( 'movie', title ).getId();
+
+          var movie = new TmdbCall( tmdbKey, true ).Search( 'movie', title );
+          var movieId = movie.getId();
+
+          if ( !movieId ) {
+            $actors.unspin();
+            $actors.notFound();
+
+            return;
+          }
 
           var movies = localStorage.getItem( 'movies' );
           var localMovieData;
           var cast;
           var topFive;
 
-          // if ( movies ) {
-          if ( false ) {
+          if ( movies ) {
             // Have some movies stored already; see if this one is in there
             localMovieData = JSON.parse( movies );
 
-            if ( localMovieData.hasOwnProperty( movieId ) && localMovieData[movieId].hasOwnProperty( 'cast' ) ) {
+            if (
+              localMovieData.hasOwnProperty( movieId ) &&
+              localMovieData[movieId].hasOwnProperty( 'cast' ) &&
+              ( localMovieData[movieId].cast > 0 )
+            ) {
               cast = localMovieData[movieId].cast;
               console.log( `Loaded Movie ID ${movieId} from localStorage` );
             } else {
+              $actors.spin();
+
               cast = this.getCast( movieId );
 
-              movies[movieId] = {
+              if ( !cast || !cast.length ) {
+                $actors.unspin();
+                $actors.notFound(); // @todo: noCastData
+
+                return;
+              }
+
+              localMovieData[movieId] = {
                 "cast": cast
               };
 
-              localStorage.setItem( 'movies', JSON.stringify( movies ) );
+              localStorage.setItem( 'movies', JSON.stringify( localMovieData ) );
 
               console.log( `Had movies in localStorage but not this one. Stored Movie ID ${movieId} to localStorage` );
             }
           } else {
             // No movies stored yet
-            // movies = {};
+            $actors.spin();
+
+            movies = {};
 
             cast = this.getCast( movieId );
 
-            // movies[movieId] = {
-            //   "cast": cast
-            // };
+            if ( !cast || !cast.length ) {
+              $actors.unspin();
+              $actors.notFound(); // @todo: noCastData
 
-            // localStorage.setItem( 'movies', JSON.stringify( movies ) );
+              return;
+            }
 
-            // console.log( `Stored Movie ID ${movieId} to localStorage` );
+            movies[movieId] = {
+              "cast": cast
+            };
+
+            localStorage.setItem( 'movies', JSON.stringify( movies ) );
+
+            console.log( `Stored Movie ID ${movieId} to localStorage` );
           }
+
+          // console.log( 'cast', cast );
 
           topFive = cast.slice( 0, 5 );
 
