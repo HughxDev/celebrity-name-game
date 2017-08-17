@@ -5,11 +5,27 @@
     <style>
       :host {
         display: block;
+        text-align: center;
+      }
+
+      .form {
+        width: var( --content__width );
+        margin: 0 auto;
+      }
+
+      .button {
+        @apply --button-reset;
+
+        background-color: #169CFF;
+      }
+
+      .button.button--load {
+
       }
     </style>
-    <form id="form" name="form">
+    <form id="form" class="form" name="form">
       <label>Movie Title: <input type="text" id="title" name="title" value="The Matrix" /></label>
-      <button id="load">Load</button>
+      <button id="load" class="button button--load">Load</button>
     </form>
     <celeb-game-movie__actors id="actors"></celeb-game-movie__actors>
   </template>
@@ -20,7 +36,6 @@
       var ownerDocument = document.currentScript.ownerDocument;
 
       class CelebGameMovie extends HTMLElement {
-        
         // Remember to call the super method here
         constructor() {
           super();
@@ -58,11 +73,12 @@
           const $actors = this.shadowRoot.querySelector( '#actors' );
 
           if ( !!topFive & topFive.length ) {
+            console.log( '$actors', $actors );
+            
+            // console.log( 'topFive', topFive );
+
+            // console.log( '$actors.actors', $actors.actors );
             $actors.actors = topFive;
-
-            console.log( 'topFive', topFive );
-
-            console.log( '$actors.actors', $actors.actors );
           }
         }
       }

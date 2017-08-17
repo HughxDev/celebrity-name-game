@@ -1,0 +1,161 @@
+<html>
+  <template id="celeb-game-movie-actors">
+    <style>
+      :host {
+        display: block;
+      }
+
+      img {
+        max-width: 100%;
+      }
+
+      .list {
+        padding: 0;
+        margin: var( --list-item__margin ) auto;
+        width: var( --content__width );
+      }
+
+      .list.list--cards {
+        width: 50%;
+      }
+
+      .list__item {
+        display: inline-block;
+        vertical-align: middle;
+        margin: var( --list-item__margin );
+      }
+
+      .list__item.list__item--card {
+        width: var( --card__width );
+        height: var( --card__height );
+      }
+
+      .button {
+        @apply --button-reset;
+      }
+
+      .button:focus,
+      .button:active {
+        outline: none;
+      }
+
+      .button.button--actor {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <ul id="cards" class="list">
+      <!--
+        <li class="list__item">
+          <button class="button button\-\-actor">
+            <img/>
+          </button>
+        </li>
+      -->
+    </ul>
+  </template>
+  <script>//<![CDATA[
+    (function () {
+      "use strict";
+
+      const ownerDocument = document.currentScript.ownerDocument;
+      const $template = ownerDocument.querySelector( '#celeb-game-movie-actors' );
+
+      if ( $template ) {
+        if ( ShadyCSS ) {
+          ShadyCSS.prepareTemplate( $template, 'celeb-game-movie__actors' );
+        }
+      }
+
+      class CelebGameMovieActors extends HTMLElement {
+        set actors( data ) {
+          this._actors = data;
+          this.render();
+        }
+
+        get actors() {
+          return this._actors;
+        }
+        
+        // Remember to call the super method here
+        constructor() {
+          super();
+
+          if ( ShadyCSS ) {
+            ShadyCSS.styleElement( this );
+            // window.ShadyCSS.styleDocument();
+          }
+
+          if ( $template && !this.shadowRoot ) {
+            this.attachShadow({
+              "mode": "open"
+            });
+            this.shadowRoot.appendChild( ownerDocument.importNode( $template.content, true ) );
+          }
+
+          // @todo: Implement in tmdb.js
+          this._imagesUrlPrefix = 'https://image.tmdb.org/t/p/w276_and_h350_bestv2/';
+
+          this._cardNominalWidth = 276;
+          this._cardNominalHeight = 350;
+          this._cardDownresFactor = 2;
+
+          this.$cards = this.shadowRoot.querySelector( '#cards' );
+        }
+
+        connectedCallback() {
+          if ( !!this.actors && this.actors.length ) {
+            this.render();
+          }
+        }
+
+        renderActors() {
+          this.actors.forEach( ( actor ) => {
+            var $li = ownerDocument.createElement( 'li' );
+            var $button = ownerDocument.createElement( 'button' );
+            var $img = ownerDocument.createElement( 'img' );
+
+            $img.src = this._imagesUrlPrefix + actor.profile_path;
+            $img.width = ( this._cardNominalWidth / this._cardDownresFactor );
+            $img.height = ( this._cardNominalHeight / this._cardDownresFactor );
+
+            $button.classList.add( 'button', 'button--actor' );
+            $li.classList.add( 'list__item', 'list__item--card' );
+
+            $button.appendChild( $img );
+            $li.appendChild( $button );
+
+            this.$cards.appendChild( $li );
+          } );
+
+          // $actors.innerHTML += actorsHTML;
+        }
+
+        renderNames() {
+          this.actors.forEach( ( actor ) => {
+            var $li = ownerDocument.createElement( 'li' );
+            var $button = ownerDocument.createElement( 'button' );
+
+            $button.classList.add( 'button', 'button--actor', 'button--actor-name' );
+            $button.textContent = actor.name;
+
+            $li.classList.add( 'list__item', 'list__item--card' );
+
+            $li.appendChild( $button );
+
+            this.$cards.appendChild( $li );
+          } );
+
+          // $actors.innerHTML += actorsHTML;
+        }
+
+        render() {
+          this.renderActors();
+          this.renderNames();
+        }
+      }
+
+      window.customElements.define( 'celeb-game-movie__actors', CelebGameMovieActors );
+    })();
+  //]]></script>
+</html>

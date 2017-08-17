@@ -1,0 +1,89 @@
+<html>
+  <link rel="import" href="celeb-game-header.html" />
+  <link rel="import" href="celeb-game-movie.html" />
+
+  <template id="celeb-game">
+    <style>
+      :host {
+        display: block;
+
+        --card__nominal-width: 276px;
+        --card__nominal-height: 350px;
+        --card__downres-factor: 2;
+
+        --card__width: calc( var( --card__nominal-width ) / var( --card__downres-factor ) );
+        --card__height: calc( var( --card__nominal-height ) / var( --card__downres-factor ) );
+      
+        --list-item__margin: 0.25rem;
+
+        --content__width: calc( ( var( --card__width ) * 2 ) + ( var( --list-item__margin ) * 4 ) );
+      }
+    </style>
+    <celeb-game-header></celeb-game-header>
+    <main>
+      <celeb-game-movie></celeb-game-movie>
+    </main>
+  </template>
+
+  <script>//<![CDATA[
+    (function () {
+      "use strict";
+
+      const ownerDocument = document.currentScript.ownerDocument;
+      const $template = ownerDocument.querySelector( '#celeb-game' );
+
+      if ( $template ) {
+        if ( ShadyCSS ) {
+          ShadyCSS.prepareTemplate( $template, 'celeb-game' );
+        }
+      }
+
+      class CelebGame extends HTMLElement {
+        constructor() {
+          super();
+
+          if ( ShadyCSS ) {
+            ShadyCSS.styleElement( this );
+            // window.ShadyCSS.styleDocument();
+          }
+
+          if ( $template && !this.shadowRoot ) {
+            this.attachShadow({
+              "mode": "open"
+            });
+            this.shadowRoot.appendChild( ownerDocument.importNode( $template.content, true ) );
+          }
+        } // constructor
+      }
+
+      window.customElements.define( 'celeb-game', CelebGame );
+    })();
+
+    // var app = {
+    //     // Application Constructor
+    //     initialize: function() {
+    //         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+    //     },
+
+    //     // deviceready Event Handler
+    //     //
+    //     // Bind any cordova events here. Common events are:
+    //     // 'pause', 'resume', etc.
+    //     onDeviceReady: function() {
+    //         this.receivedEvent('deviceready');
+    //     },
+
+    //     // Update DOM on a Received Event
+    //     receivedEvent: function(id) {
+    //         var parentElement = document.getElementById(id);
+    //         var listeningElement = parentElement.querySelector('.listening');
+    //         var receivedElement = parentElement.querySelector('.received');
+
+    //         listeningElement.setAttribute('style', 'display:none;');
+    //         receivedElement.setAttribute('style', 'display:block;');
+
+    //         console.log('Received Event: ' + id);
+    //     }
+    // };
+  //]]></script>
+</html>

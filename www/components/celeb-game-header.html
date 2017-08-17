@@ -1,0 +1,46 @@
+<html>
+  <template id="celeb-game-header">
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <header class="header">
+      <h1>Celebrity Name Game</h1>  
+    </header>
+  </template>
+  <script>//<![CDATA[
+    (function () {
+      "use strict";
+
+      const ownerDocument = document.currentScript.ownerDocument;
+      const $template = ownerDocument.querySelector( '#celeb-game-header' );
+
+      if ( $template ) {
+        if ( ShadyCSS ) {
+          ShadyCSS.prepareTemplate( $template, 'celeb-game-header' );
+        }
+      }
+
+      class CelebGame extends HTMLElement {
+        constructor() {
+          super();
+
+          if ( ShadyCSS ) {
+            ShadyCSS.styleElement( this );
+            // window.ShadyCSS.styleDocument();
+          }
+
+          if ( $template && !this.shadowRoot ) {
+            this.attachShadow({
+              "mode": "open"
+            });
+            this.shadowRoot.appendChild( ownerDocument.importNode( $template.content, true ) );
+          }
+        } // constructor
+      }
+
+      window.customElements.define( 'celeb-game-header', CelebGame );
+    })();
+  //]]></script>
+</html>
