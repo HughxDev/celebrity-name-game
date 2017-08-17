@@ -13,6 +13,7 @@
   -->
     <meta charset="UTF-8" />
     <title>Celebrity Name Game</title>
+
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval' 'unsafe-inline' https://api.themoviedb.org; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content: https://image.tmdb.org;" />
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
@@ -22,31 +23,18 @@
     <script src="node_modules/tmdb.js/functions.js"></script>
     <script src="node_modules/tmdb.js/tmdb.js"></script>
     
-    <!-- <script src="node_modules/@webcomponents/shadycss/scoping-shim.min.js"></script> -->
     <link rel="import" href="node_modules/@webcomponents/shadycss/apply-shim.html" />
     <link rel="import" href="node_modules/@webcomponents/shadycss/custom-style-interface.html" />
-    
-
     <link rel="import" href="components/celeb-game.html" />
     
     <link rel="stylesheet" type="text/css" href="css/index.css" />
-    <!-- <custom-style> -->
     <style class="document-style">
       html {
-        --baka: {
-          font-weight: bold;
-          text-align: center;
-        }
-      }
-
-      p {
-        @apply --baka;
+       
       }
     </style>
-    <!-- </custom-style> -->
   </head>
   <body>
-    <p>Baka</p>
     <celeb-game></celeb-game>
     <script>//<![CDATA[
       (function () {
