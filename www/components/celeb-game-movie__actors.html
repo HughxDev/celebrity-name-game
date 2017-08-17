@@ -82,6 +82,10 @@
         z-index: 1;
       }
 
+      .loading.fade--hidden {
+        z-index: -1;
+      }
+
       .message {
         padding: 1rem;
         width: var( --message__width );
@@ -131,6 +135,16 @@
         get actors() {
           return this._actors;
         }
+
+        getOppositeType( type ) {
+          switch ( type ) {
+            case 'face':
+              return 'name';
+
+            case 'name':
+              return 'face';
+          }
+        }
         
         // Remember to call the super method here
         constructor() {
@@ -156,9 +170,79 @@
           this._cardWidth = ( this._cardNominalWidth / this._cardDownresFactor );
           this._cardHeight = ( this._cardNominalHeight / this._cardDownresFactor );
 
+          this._lastClicked = null;
+          this._lastClickedType = null;
+
+          this._justClicked = null;
+          this._justClickedType = null;
+
           this.$loading = this.shadowRoot.querySelector( '#loading' );
           this.$cards = this.shadowRoot.querySelector( '#cards' );
           this.$notFound = this.shadowRoot.querySelector( '#not-found' );
+
+          var eventOptions = {
+            "bubbles": true,
+            "composed": true,
+            "detail": {
+              "points": 0
+            }
+          };
+
+          this.$cards.addEventListener( 'click', ( event ) => {
+            var $element = event.target;
+            var actorName;
+
+            // console.log( 'Card clicked' );
+
+            while ( $element.localName.toLowerCase() !== 'button' ) {
+              $element = $element.parentNode;
+            }
+
+            // Face clicked
+            if ( !$element.classList.contains( 'button--actor-name' ) ) {
+              console.log( 'Face clicked' );
+
+              actorName = $element.getAttribute( 'data-name' );
+
+              this._justClicked = actorName;
+              this._justClickedType = 'face';
+
+            // Name clicked
+            } else {
+              console.log( 'Name clicked' );
+
+              actorName = $element.textContent;
+
+              this._justClicked = actorName;
+              this._justClickedType = 'name';
+            }
+
+            if ( ( this._lastClicked === this._justClicked ) && ( this._lastClickedType !== this._justClickedType ) ) {
+              console.log( 'It’s a match!' );
+
+              eventOptions.detail.points = 10;
+
+              this.dispatchEvent( new CustomEvent( 'score', eventOptions ) );
+
+              while ( $element.localName.toLowerCase() !== 'li' ) {
+                $element = $element.parentNode;
+              }
+
+              $element.remove();
+
+              this.shadowRoot.querySelector( `[data-name="${this._justClicked}"]` ).remove();
+            } else {
+              console.log( 'It’s not a match…' );
+
+              this._lastClicked = this._justClicked;
+              this._lastClickedType = this._justClickedType;
+
+              this._justClicked = null;
+              this._justClickedType = null;
+            }
+
+            // this.dispatchEvent( scoreEvent );
+          } );
         }
 
         connectedCallback() {
@@ -203,6 +287,7 @@
 
             $button.classList.add( 'button', 'button--actor', 'button--actor-name' );
             $button.textContent = actor.name;
+            $button.setAttribute( 'data-name', actor.name );
 
             $li.classList.add( 'list__item', 'list__item--card' );
 

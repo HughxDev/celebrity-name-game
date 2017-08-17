@@ -70,12 +70,16 @@
         text-overflow: ellipsis;
         padding: 0.6rem 0.5rem;
       }
+
+      .score {
+        text-align: right;
+      }
     </style>
     <form id="form" class="form" name="form">
       <dl>
         <dt><label for="score">Score</label></dt>
         <dd>
-          <output id="score" class="score io io--output">999999999999999</output>
+          <output id="score" class="score io io--output">0</output>
           <button id="reset" class="button button--sidekick" type="reset">Reset</button>
         </dd>
       </dl>
@@ -118,13 +122,17 @@
           }
 
           this.load = this.load.bind( this );
-        } // constructor
-
-        connectedCallback() {
+        
           const $form = this.shadowRoot.querySelector( '#form' );
+          const $score = this.shadowRoot.querySelector( '#score' );
 
           $form.addEventListener( 'submit', this.load );
-        }
+
+          this.addEventListener( 'score', ( event ) => {
+            // console.log( 'score', event );
+            $score.textContent = parseInt( $score.textContent, 10 ) + event.detail.points;
+          } );
+        } // constructor
 
         getCast( movieId ) {
           return ( new TmdbCall( tmdbKey, true ).Movie( movieId ).getCast() );
