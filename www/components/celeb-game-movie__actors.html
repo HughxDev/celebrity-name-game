@@ -3,15 +3,6 @@
     <style>
       :host {
         display: block;
-
-        --card__nominal-width: 276px;
-        --card__nominal-height: 350px;
-        --card__downres-factor: 2;
-
-        --card__width: calc( var( --card__nominal-width ) / var( --card__downres-factor ) );
-        --card__height: calc( var( --card__nominal-height ) / var( --card__downres-factor ) );
-      
-        --list-item__margin: 0.25rem;
       }
 
       img {
@@ -21,7 +12,7 @@
       .list {
         padding: 0;
         margin: var( --list-item__margin ) auto;
-        width: calc( ( var( --card__width ) * 2 ) + ( var( --list-item__margin ) * 4 ) );
+        width: var( --content__width );
       }
 
       .list.list--cards {
@@ -39,32 +30,29 @@
         height: var( --card__height );
       }
 
-      /*button*/.actor {
-        -moz-appearance: none;
-        -webkit-appearance: none;
-        appearance: none;
+      .button {
+        @apply --button-reset;
+      }
 
-        background-color: #eee;
+      .button:focus,
+      .button:active {
+        outline: none;
+      }
 
-        cursor: pointer;
-
-        border: 0;
-        margin: 0;
-        padding: 0;
-
+      .button.button--actor {
         width: 100%;
         height: 100%;
       }
 
-      .actor:hover,
-      .actor:active {
-        outline: none;
+      p {
+        @apply --baka;
       }
     </style>
+    <p>バカ</p>
     <ul id="cards" class="list">
       <!--
         <li class="list__item">
-          <button class="actor">
+          <button class="button button\-\-actor">
             <img/>
           </button>
         </li>
@@ -75,7 +63,14 @@
     (function () {
       "use strict";
 
-      var ownerDocument = document.currentScript.ownerDocument;
+      const ownerDocument = document.currentScript.ownerDocument;
+      const $template = ownerDocument.querySelector( '#celeb-game-movie-actors' );
+
+      if ( $template ) {
+        if ( ShadyCSS ) {
+          ShadyCSS.prepareTemplate( $template, 'celeb-game-movie__actors' );
+        }
+      }
 
       class CelebGameMovieActors extends HTMLElement {
         set actors( data ) {
@@ -91,13 +86,17 @@
         constructor() {
           super();
 
-          const $shadowRoot = this.attachShadow({
-            "mode": "open"
-          });
-          const $CelebGameMovieActors = ownerDocument.querySelector( '#celeb-game-movie-actors' );
-          const $shadowContent = $CelebGameMovieActors.content.cloneNode( true );
+          if ( ShadyCSS ) {
+            ShadyCSS.styleElement( this );
+            // window.ShadyCSS.styleDocument();
+          }
 
-          $shadowRoot.appendChild( $shadowContent );
+          if ( $template && !this.shadowRoot ) {
+            this.attachShadow({
+              "mode": "open"
+            });
+            this.shadowRoot.appendChild( ownerDocument.importNode( $template.content, true ) );
+          }
 
           // @todo: Implement in tmdb.js
           this._imagesUrlPrefix = 'https://image.tmdb.org/t/p/w276_and_h350_bestv2/';
@@ -125,7 +124,7 @@
             $img.width = ( this._cardNominalWidth / this._cardDownresFactor );
             $img.height = ( this._cardNominalHeight / this._cardDownresFactor );
 
-            $button.classList.add( 'actor' );
+            $button.classList.add( 'button', 'button--actor' );
             $li.classList.add( 'list__item', 'list__item--card' );
 
             $button.appendChild( $img );
@@ -142,7 +141,7 @@
             var $li = ownerDocument.createElement( 'li' );
             var $button = ownerDocument.createElement( 'button' );
 
-            $button.classList.add( 'actor', 'actor--name' );
+            $button.classList.add( 'button', 'button--actor', 'button--actor-name' );
             $button.textContent = actor.name;
 
             $li.classList.add( 'list__item', 'list__item--card' );

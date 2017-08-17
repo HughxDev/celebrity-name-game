@@ -6,9 +6,25 @@
     <style>
       :host {
         display: block;
+
+        --card__nominal-width: 276px;
+        --card__nominal-height: 350px;
+        --card__downres-factor: 2;
+
+        --card__width: calc( var( --card__nominal-width ) / var( --card__downres-factor ) );
+        --card__height: calc( var( --card__nominal-height ) / var( --card__downres-factor ) );
+      
+        --list-item__margin: 0.25rem;
+
+        --content__width: calc( ( var( --card__width ) * 2 ) + ( var( --list-item__margin ) * 4 ) );
+      }
+
+      p {
+        @apply --baka;
       }
     </style>
     <celeb-game-header></celeb-game-header>
+    <p>馬鹿</p>
     <main>
       <celeb-game-movie></celeb-game-movie>
     </main>
@@ -18,28 +34,36 @@
     (function () {
       "use strict";
 
-      var ownerDocument = document.currentScript.ownerDocument;
+      const ownerDocument = document.currentScript.ownerDocument;
+      const $template = ownerDocument.querySelector( '#celeb-game' );
+
+      if ( $template ) {
+        if ( ShadyCSS ) {
+          ShadyCSS.prepareTemplate( $template, 'celeb-game' );
+        }
+      }
 
       class CelebGame extends HTMLElement {
-        
-        // Remember to call the super method here
         constructor() {
           super();
 
-          var game = this;
+          if ( ShadyCSS ) {
+            ShadyCSS.styleElement( this );
+            // window.ShadyCSS.styleDocument();
+          }
 
-          const $shadowRoot = game.attachShadow({
-            "mode": "open"
-          });
-          const $CelebGame = ownerDocument.querySelector( '#celeb-game' );
-          const $shadowContent = $CelebGame.content.cloneNode( true );
-
-          $shadowRoot.appendChild( $shadowContent );
-        }
+          if ( $template && !this.shadowRoot ) {
+            this.attachShadow({
+              "mode": "open"
+            });
+            this.shadowRoot.appendChild( ownerDocument.importNode( $template.content, true ) );
+          }
+        } // constructor
       }
 
       window.customElements.define( 'celeb-game', CelebGame );
     })();
+
     // var app = {
     //     // Application Constructor
     //     initialize: function() {

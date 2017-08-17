@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!-- <\?xml version="1.0" encoding="UTF-8"?> -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
   <head>
@@ -17,26 +17,51 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    
     <script src="node_modules/webcomponentsjs/lite.js"></script>
     <script src="node_modules/tmdb.js/functions.js"></script>
     <script src="node_modules/tmdb.js/tmdb.js"></script>
+    
+    <!-- <script src="node_modules/@webcomponents/shadycss/scoping-shim.min.js"></script> -->
+    <link rel="import" href="node_modules/@webcomponents/shadycss/apply-shim.html" />
+    <link rel="import" href="node_modules/@webcomponents/shadycss/custom-style-interface.html" />
+    
+
     <link rel="import" href="components/celeb-game.html" />
+    
     <link rel="stylesheet" type="text/css" href="css/index.css" />
+    <!-- <custom-style> -->
+    <style class="document-style">
+      html {
+        --baka: {
+          font-weight: bold;
+          text-align: center;
+        }
+      }
+
+      p {
+        @apply --baka;
+      }
+    </style>
+    <!-- </custom-style> -->
   </head>
   <body>
+    <p>Baka</p>
     <celeb-game></celeb-game>
     <script>//<![CDATA[
       (function () {
-        // window.addEventListener( 'WebComponentsReady', function CelebGameWebComponentsReady() {
-        window.customElements.whenDefined( 'celeb-game' ).then(function CelebGameDefined() {
-          // At this point we are guaranteed that all required polyfills have loaded,
-          // all HTML imports have loaded, and all defined custom elements have upgraded
-          let CelebGame = customElements.get( 'celeb-game' );
-          let element = document.querySelector( 'celeb-game' );
+        "use strict";
+        
+        // Init & Body
+        if ( ShadyCSS && ShadyCSS.CustomStyleInterface ) {
+          ShadyCSS.CustomStyleInterface.addCustomStyle( document.querySelector( 'style.document-style' ) );
+        }
 
-          console.assert( element instanceof CelebGame );  // 👍
+        window.customElements.whenDefined( 'celeb-game' ).then(function CelebGameDefined() {
+          if ( ShadyCSS && ShadyCSS.CustomStyleInterface ) {
+            ShadyCSS.styleDocument();
+          }
         } ); // CelebGameDefined
-        // } );
       })();
     //]]></script>
     <script type="text/javascript" src="cordova.js"></script>

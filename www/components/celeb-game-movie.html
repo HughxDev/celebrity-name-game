@@ -7,10 +7,25 @@
         display: block;
         text-align: center;
       }
+
+      .form {
+        width: var( --content__width );
+        margin: 0 auto;
+      }
+
+      .button {
+        @apply --button-reset;
+
+        background-color: #169CFF;
+      }
+
+      .button.button--load {
+
+      }
     </style>
-    <form id="form" name="form">
+    <form id="form" class="form" name="form">
       <label>Movie Title: <input type="text" id="title" name="title" value="The Matrix" /></label>
-      <button id="load">Load</button>
+      <button id="load" class="button button--load">Load</button>
     </form>
     <celeb-game-movie__actors id="actors"></celeb-game-movie__actors>
   </template>

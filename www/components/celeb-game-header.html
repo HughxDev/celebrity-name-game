@@ -3,38 +3,49 @@
     <style>
       :host {
         display: block;
-        text-align: center;
+      }
+
+      p {
+        @apply --baka;
       }
     </style>
-    <header>
-      <h1>Celebrity Name Game</h1>
+    <header class="header">
+      <h1>Celebrity Name Game</h1>  
     </header>
+    <p>ばか</p>
   </template>
   <script>//<![CDATA[
     (function () {
       "use strict";
 
-      var ownerDocument = document.currentScript.ownerDocument;
+      const ownerDocument = document.currentScript.ownerDocument;
+      const $template = ownerDocument.querySelector( '#celeb-game-header' );
 
-      class CelebGameHeader extends HTMLElement {
-        
-        // Remember to call the super method here
-        constructor() {
-          super();
-
-          var header = this;
-
-          const $shadowRoot = header.attachShadow({
-            "mode": "open"
-          });
-          const $CelebGameHeader = ownerDocument.querySelector( '#celeb-game-header' );
-          const $shadowContent = $CelebGameHeader.content.cloneNode( true );
-
-          $shadowRoot.appendChild( $shadowContent );
+      if ( $template ) {
+        if ( ShadyCSS ) {
+          ShadyCSS.prepareTemplate( $template, 'celeb-game-header' );
         }
       }
 
-      window.customElements.define( 'celeb-game-header', CelebGameHeader );
+      class CelebGame extends HTMLElement {
+        constructor() {
+          super();
+
+          if ( ShadyCSS ) {
+            ShadyCSS.styleElement( this );
+            // window.ShadyCSS.styleDocument();
+          }
+
+          if ( $template && !this.shadowRoot ) {
+            this.attachShadow({
+              "mode": "open"
+            });
+            this.shadowRoot.appendChild( ownerDocument.importNode( $template.content, true ) );
+          }
+        } // constructor
+      }
+
+      window.customElements.define( 'celeb-game-header', CelebGame );
     })();
   //]]></script>
 </html>
